@@ -1,0 +1,32 @@
+server:
+  port: 9001
+#security:
+#  oauth2:
+#    resource:
+#      token-info-uri: http://localhost:8080/oauth/check_token
+#      id: oauth2
+#    client:
+#      access-token-uri: http://localhost:8080/oauth/token
+#      user-authorization-uri: http://localhost:8080/oauth/authorize
+#      client-id: oauth2
+#      client-secret: oauth2
+spring:
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: update
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/charon?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  flyway:
+    baselineVersion: 0
+    baselineOnMigrate: true
+    table: flyway_assets_history
+    enabled: true

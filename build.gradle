@@ -1,0 +1,123 @@
+buildscript {
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+
+        } // aliYun
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/'
+        }
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.6.RELEASE")
+    }
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR3")
+}
+
+configure(allprojects) { project ->
+
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+
+    group = 'com.charon'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
+
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+
+        } // aliYun
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/'
+        }
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+}
+
+configure(subprojects) { project ->
+    dependencies {
+        implementation(
+                'org.springframework.boot:spring-boot-starter-test',
+
+        )
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+        testImplementation 'org.springframework.security:spring-security-test'
+
+        // lombok
+        compileOnly 'org.projectlombok:lombok:1.18.12'
+        annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+        // swagger
+        compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0-SNAPSHOT'
+        compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0-SNAPSHOT'
+
+
+
+    }
+
+}
+
+
+
+
+project(':charon-exchange') {
+    dependencies {
+        implementation(
+//                'org.springframework.boot:spring-boot-starter-data-redis',
+                'org.springframework.boot:spring-boot-starter-webflux',
+//                'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client',
+                'org.springframework.cloud:spring-cloud-starter-openfeign',
+                'com.baomidou:mybatis-plus-boot-starter:3.3.1',
+                'org.springframework.boot:spring-boot-starter-validation',
+
+                project(':charon-common')
+
+
+//                'org.springframework.cloud:spring-cloud-bus',
+//                'org.springframework.cloud:spring-cloud-starter-config',
+//                'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client',
+//                'org.springframework.cloud:spring-cloud-stream'
+        )
+        compile group: 'com.lmax', name: 'disruptor', version: '3.4.2'
+        compile group: 'io.springfox', name: 'springfox-spring-webflux', version: '3.0.0-SNAPSHOT'
+    }
+}
+
+project('charon-eureka') {
+    dependencies {
+        implementation(
+                'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+        )
+    }
+}
+
+project('charon-common') {
+    dependencies {
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

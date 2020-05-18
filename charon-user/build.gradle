@@ -1,0 +1,21 @@
+project(':charon-user') {
+    dependencies {
+        implementation(
+//                'org.springframework.cloud:spring-cloud-starter-oauth2',
+                'org.springframework.boot:spring-boot-starter-webflux',
+                'org.springframework.boot:spring-boot-starter-jdbc',
+                 group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa',
+
+                project(':charon-common')
+
+
+        )
+
+        // db
+        compile group: 'org.flywaydb', name: 'flyway-core', version: '6.3.3'
+        compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
+        compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.5'
+
+        compile group: 'io.springfox', name: 'springfox-spring-webflux', version: '3.0.0-SNAPSHOT'
+    }
+}

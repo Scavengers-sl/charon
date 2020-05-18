@@ -1,0 +1,12 @@
+rootProject.name = 'charon'
+
+include(
+        'charon-websocket',
+        'charon-auth',
+        'charon-user',
+        'charon-gateway',
+        'charon-exchange',
+        'charon-eureka',
+        'charon-common'
+
+)

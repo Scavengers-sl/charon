@@ -1,0 +1,60 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: charon-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth
+          uri: http://localhost:8082
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: user
+          uri: lb://charon-user
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          charon-gateway:
+#            provider: auth
+#            client-id: charon-gateway
+#            client-secret: charon-gateway
+#            authorization-grant-type: password
+#            scope: all
+#            access-token-uri: http://localhost:8082/auth/oauth/token
+#            user-authorization-uri: http://localhost:8082/auth/oauth/authorize
+#        provider:
+#          auth:
+#            user-name-attribute: sub
+#            pu: http://uaa:8090/uaa/token_keys
+#            authorization-uri: http://localhost:8082/oauth/authorize
+#            token-uri: http://localhost:8082/oauth/token
+#            user-info-uri: http://localhost:8082/auth/authenticate
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+security:
+  oauth2:
+    client:
+      client-id: charon-gateway
+      client-secret: charon-gateway
+    resource:
+      id: oauth2
+      jwt:
+        key-value: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApdcGmk59rf/q3ZJGkLhc
+          vvrsNK9XOK3n7PmKYIFp8GKusr1oRdoJNa9y0w/qhhD5gDzQOYGfCOg6GVFCLdUq
+          iR0x/ftDSw8K0jjcyv85v7XUj9tvH2GEfh8ks1Q2JHup+eEp1Xpq75+eA4ZJUP8g
+          F6r/HUqag4YD09EP3vQDJRC38L6JfJlVGoF4bAE/DRooyvZ0EVaIwBO8V5xFeMfv
+          H+YkJ8WlWU3JSNDaIlUAK9o4g56IJm5Cx/TRHuOu5fzS9l55qz4fdj4lPugMCy/k
+          FNd1Nqj0RbtLOC0aKDk1dYtZ3Inn/r094FJKtLJD99se7gpC+HKV+WMtFVV1qmJk
+          qwIDAQAB
+      token-info-uri: http://localhost:8001/auth/me
